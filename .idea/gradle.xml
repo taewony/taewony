@@ -12,12 +12,13 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/cupcake" />
+            <option value="$PROJECT_DIR$/dropdown" />
+            <option value="$PROJECT_DIR$/material_design" />
             <option value="$PROJECT_DIR$/w03" />
             <option value="$PROJECT_DIR$/w04" />
             <option value="$PROJECT_DIR$/w05" />
             <option value="$PROJECT_DIR$/w06" />
             <option value="$PROJECT_DIR$/w07" />
-            <option value="$PROJECT_DIR$/w09" />
           </set>
         </option>
       </GradleProjectSettings>
