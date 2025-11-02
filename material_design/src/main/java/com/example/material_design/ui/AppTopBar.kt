@@ -7,7 +7,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumTopAppBar
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,16 +49,20 @@ fun AppTopBar(
             ) {
                 Icon(
                     imageVector = Icons.Default.Apps,
-                    contentDescription = "App Logo",
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    contentDescription = "App Logo"
+                    // [테마 정비] 아이콘 색상은 TopAppBarDefaults에서 지정하므로 tint를 직접 설정하지 않습니다.
                 )
+                // [테마 정비] 3. 간격 규칙 적용
+                // 로고와 제목 사이의 간격은 12.dp로 설정합니다.
                 Spacer(modifier = Modifier.width(12.dp))
+                // [테마 정비] 2. 타이포그래피 시스템 적용
+                // 상단 바의 제목은 `titleLarge` 스타일을 사용하여 명확하게 표시합니다.
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold
-                    ),
-                    color = MaterialTheme.colorScheme.onPrimary
+                    )
+                    // [테마 정비] 텍스트 색상은 TopAppBarDefaults에서 지정하므로 color를 직접 설정하지 않습니다.
                 )
             }
         },
@@ -59,17 +71,22 @@ fun AppTopBar(
                 IconButton(onClick = onMenuClick) {
                     Icon(
                         imageVector = Icons.Default.Menu,
-                        contentDescription = "Menu",
-                        tint = MaterialTheme.colorScheme.onPrimary
+                        contentDescription = "Menu"
+                        // [테마 정비] 아이콘 색상은 TopAppBarDefaults에서 지정하므로 tint를 직접 설정하지 않습니다.
                     )
                 }
             }
         },
+        // [테마 정비] 1. 색상 시스템 적용
+        // TopAppBar의 색상을 역할에 따라 명확하게 정의합니다.
         colors = TopAppBarDefaults.mediumTopAppBarColors(
+            // 기본 상태의 배경색은 브랜드 색상인 `primary`로 설정합니다.
             containerColor = MaterialTheme.colorScheme.primary,
+            // 스크롤되어 상단 바가 축소되었을 때의 배경색은 `primaryContainer`로 변경하여 시각적 차이를 줍니다.
+            scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer,
+            // 제목과 아이콘 등 내용물의 색상은 배경색(`primary`)과 대비가 잘 되는 `onPrimary`로 설정합니다.
             titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-            scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
         ),
         scrollBehavior = scrollBehavior
     )
@@ -78,7 +95,7 @@ fun AppTopBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-fun AppTopBarPreview() {
+fun MediumTopAppBarPreview() {
     ComposeLabTheme {
         AppTopBar(
             title = "OpenKnights Store",

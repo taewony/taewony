@@ -1,13 +1,19 @@
 
 package com.example.material_design.ui
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.material_design.ui.theme.ComposeLabTheme
 
 /**
  * 앱의 모든 화면에서 공통으로 사용할 기본 레이아웃 구조.
@@ -20,6 +26,7 @@ import androidx.compose.ui.Modifier
  */
 @Composable
 fun BaseScaffold(
+    modifier: Modifier = Modifier,
     topBar: @Composable () -> Unit,
     bottomBar: @Composable () -> Unit = {},
     fab: @Composable () -> Unit = {},
@@ -27,6 +34,7 @@ fun BaseScaffold(
 ) {
     // Scaffold는 Material Design의 기본적인 레이아웃 구조를 쉽게 만들게 도와줌
     Scaffold(
+        modifier = modifier,
         topBar = topBar,
         bottomBar = bottomBar,
         floatingActionButton = fab
@@ -41,5 +49,29 @@ fun BaseScaffold(
             // content 람다에 Modifier를 전달하여 Surface 내부에 콘텐츠를 배치
             content(Modifier.fillMaxSize())
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showSystemUi = true, name = "BaseScaffold Preview")
+@Composable
+fun BaseScaffoldPreview() {
+    ComposeLabTheme {
+        BaseScaffold(
+            topBar = {
+                AppTopBar(
+                    title = "Scaffold Preview",
+                    onMenuClick = null // No drawer in this simple preview
+                )
+            },
+            content = { modifier ->
+                Box(
+                    modifier = modifier,
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = "This is the main content area.")
+                }
+            }
+        )
     }
 }
