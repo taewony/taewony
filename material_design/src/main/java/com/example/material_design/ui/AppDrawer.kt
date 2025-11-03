@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.material_design.ui.theme.AppSpacing
 import com.example.material_design.ui.theme.ComposeLabTheme
 import kotlinx.coroutines.launch
 
@@ -82,20 +83,20 @@ fun AppDrawer(
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 // [테마 정비] 3. 간격(Spacing) 규칙 적용
                 // 헤더 텍스트의 시작 부분에 24.dp의 여백을 주어 시각적 안정감을 더합니다.
-                modifier = Modifier.padding(start = 24.dp),
+                modifier = Modifier.padding(start = AppSpacing.lg),
                 style = MaterialTheme.typography.headlineSmall
             )
         }
 
-        // 헤더와 아이템 목록 사이의 간격은 16.dp로 설정합니다.
-        Spacer(modifier = Modifier.height(16.dp))
+        // 헤더와 아이템 목록 사이의 간격은 AppSpacing.md로 설정합니다.
+        Spacer(modifier = Modifier.height(AppSpacing.md))
 
         // --- 2. Drawer 아이템 목록 ---
-        // 아이템 좌우에 12.dp의 여백을 주어 정렬합니다.
-        Column(modifier = Modifier.padding(horizontal = 12.dp)) {
+        // 아이템 좌우에 AppSpacing.sm의 여백을 주어 정렬합니다.
+        Column(modifier = Modifier.padding(horizontal = AppSpacing.sm)) {
             items.forEach { (title, icon) ->
                 NavigationDrawerItem(
-                    label = { Text(title) },
+                    label = { Text(title, style = MaterialTheme.typography.bodyMedium) },
                     icon = { Icon(imageVector = icon, contentDescription = title) },
                     // 현재 선택된 아이템을 시각적으로 표시합니다.
                     selected = selectedItem == title,

@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.material_design.ui.theme.AppSpacing
 import com.example.material_design.ui.theme.ComposeLabTheme
 import kotlinx.coroutines.launch
 
@@ -79,7 +80,7 @@ fun TabsLayoutPreview() {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(16.dp),
+                        .padding(AppSpacing.md),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(text = "Content for page: ${page + 1}")

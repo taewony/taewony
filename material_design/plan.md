@@ -33,36 +33,54 @@
 *   **🎯 목표:** 모든 화면이 공유할 수 있는 공통 레이아웃(`TopBar`, `Content`, `Drawer` 등)의 기본 틀을 `BaseScaffold`로 정의합니다.
 *   **✅ 상태:** **완료**
 *   **현재 결과물:** `BaseScaffold.kt` 파일이 프로젝트에 존재하며, 기본 Preview가 추가되었습니다.
+*   **✍️ 학습 내용:**
+    *   **`Scaffold`**: MD3의 가장 기본적인 화면 구조를 제공하는 컨테이너입니다. `topBar`, `bottomBar`, `floatingActionButton`, `content` 등 주요 UI 영역을 슬롯(slot) 형태로 제공하여, 개발자가 각 영역에 원하는 컴포저블을 쉽게 배치할 수 있도록 돕습니다. `BaseScaffold`는 이 `Scaffold`를 한 번 더 감싸, 우리 앱만의 공통 레이아웃 규칙을 적용하는 기반이 됩니다.
 
 ## 2단계: TopBar 및 Drawer 컴포넌트 분리
 
 *   **🎯 목표:** 중복으로 정의될 수 있는 상단 바와 내비게이션 서랍을 각각 `AppTopBar`와 `AppDrawer` 컴포넌트로 분리하여 재사용성을 높입니다.
 *   **✅ 상태:** **완료**
 *   **현재 결과물:** `AppTopBar.kt`, `AppDrawer.kt` 파일이 존재하며, 각각의 Preview가 구현되어 있습니다.
+*   **✍️ 학습 내용:**
+    *   **`TopAppBar` (`MediumTopAppBar`)**: 화면 상단에 위치하여 제목, 내비게이션 아이콘, 액션 버튼 등을 표시합니다. `MediumTopAppBar`는 스크롤 시 크기가 자연스럽게 변하는 동적 기능을 제공하여 풍부한 사용자 경험을 만듭니다. `TopAppBarDefaults.enterAlwaysScrollBehavior()`와 같은 스크롤 동작을 연결하여 사용합니다.
+    *   **`ModalNavigationDrawer`**: 화면 밖(주로 왼쪽)에 숨겨져 있다가 사용자의 요청(예: 메뉴 아이콘 클릭) 시 나타나는 내비게이션 메뉴입니다. `drawerContent`에 서랍의 UI(`AppDrawer`)를, 주 콘텐츠 영역에는 나머지 화면(`BaseScaffold`)을 배치하는 방식으로 사용합니다.
+    *   **`rememberDrawerState`**: `Drawer`의 열림(`DrawerValue.Open`) 또는 닫힘(`DrawerValue.Closed`) 상태를 기억하고 관리하는 훅(hook)입니다. `coroutineScope`와 함께 사용하여 `drawerState.open()` 또는 `drawerState.close()`를 호출함으로써 서랍을 제어할 수 있습니다.
 
 ## 3단계: 카드 레이아웃 컴포넌트화
 
 *   **🎯 목표:** 앱 전반에서 사용될 카드 UI의 스타일을 통일하고, `CardInfo` 데이터와 결합된 재사용 가능한 컴포넌트를 만듭니다.
 *   **✅ 상태:** **완료**
 *   **현재 결과물:** `CardInfo.kt` 데이터 클래스와 이를 사용하는 `InfoCard.kt` 컴포저블 및 Preview가 존재합니다.
+*   **✍️ 학습 내용:**
+    *   **`Card`**: 정보를 담는 컨테이너 UI 컴포넌트로, 그림자(elevation), 테두리, 둥근 모서리 등을 통해 다른 콘텐츠와 시각적으로 구분됩니다. `Card` 내부에 `Column`이나 `Row`를 사용하여 이미지, 텍스트 등 다양한 정보를 체계적으로 배치할 수 있습니다. `InfoCard`는 이 `Card`를 기반으로 앱의 특정 데이터(`CardInfo`)에 맞게 스타일링된 재사용 컴포넌트입니다.
 
 ## 4단계: 탭 + 페이지 구조 일원화
 
 *   **🎯 목표:** `TabRow`와 `HorizontalPager`를 결합한 탭 레이아웃을 공통 컴포넌트로 분리합니다.
 *   **✅ 상태:** **완료**
 *   **현재 결과물:** `TabsLayout.kt` 파일이 생성되었고, Preview가 포함되어 있습니다.
+*   **✍️ 학습 내용:**
+    *   **`TabRow`와 `Tab`**: 여러 화면 섹션을 탭 형태로 구성할 때 사용합니다. `TabRow`는 탭들의 컨테이너 역할을 하며, 각 `Tab`은 개별 탭 항목을 나타냅니다. `selectedTabIndex`를 통해 현재 선택된 탭을 제어합니다.
+    *   **`HorizontalPager`**: 좌우 스와이프로 화면을 전환할 수 있는 컨테이너입니다. `TabRow`의 탭 선택과 `HorizontalPager`의 페이지 상태를 `rememberPagerState`를 통해 동기화하면, 사용자가 탭을 클릭하거나 화면을 스와이프할 때 일관된 상호작용을 구현할 수 있습니다.
 
 ## 5단계: BottomNav, FAB 컴포넌트화
 
 *   **🎯 목표:** 하단 내비게이션 바와 플로팅 액션 버튼의 구현을 분리하여 디자인 일관성을 확보합니다.
 *   **✅ 상태:** **완료**
 *   **현재 결과물:** `AppBottomNav.kt`와 `AppFab.kt` 파일이 생성되었고, 각각의 Preview가 포함되어 있습니다.
+*   **✍️ 학습 내용:**
+    *   **`NavigationBar`와 `NavigationBarItem`**: 화면 하단에 위치하여 앱의 최상위 목적지(destination) 간 빠른 이동을 돕습니다. `NavigationBar`는 컨테이너이며, 그 안에 3~5개의 `NavigationBarItem`을 배치하는 것이 일반적입니다. 각 `Item`은 `icon`, `label`, `selected` 상태를 가집니다.
+    *   **`FloatingActionButton` (`FAB`)**: 화면의 주된 긍정적 액션(예: 새로 만들기, 추가)을 나타내는 원형 버튼입니다. 보통 `Scaffold`의 `floatingActionButton` 슬롯에 배치되며, 화면 콘텐츠 위에 떠 있는 것처럼 보입니다. `ExtendedFloatingActionButton`은 아이콘과 텍스트를 함께 표시하여 더 명확한 액션을 안내할 수 있습니다.
 
 ## 6단계: Preview 통합 및 단계별 UI 확장 구조화
 
 *   **🎯 목표:** 모든 공통 컴포넌트를 조합하여, 앱의 기능이 단계별로 확장되는 과정을 보여주는 통합 Preview들을 구성합니다.
 *   **✅ 상태:** **완료**
 *   **현재 결과물:** `previews/CombinedPreviews.kt` 파일에 `PreviewWithCards`, `PreviewWithTabs`, `PreviewWithDrawerAndFab`가 모두 구현되어 있습니다.
+*   **✍️ 학습 내용:**
+    *   **`@Preview`의 활용**: 단순한 미리보기를 넘어, UI 개발의 생산성을 극대화하는 핵심 도구입니다.
+        *   **단위 테스트**: 각 컴포넌트를 독립적으로 렌더링하여 시각적으로 테스트합니다.
+        *   **통합 테스트**: 여러 컴포넌트를 조합하여 실제 화면과 유사한 복잡한 레이아웃 및 상호작용을 검증합니다. `CombinedPreviews.kt`처럼 단계별로 UI가 어떻게 확장되는지 한눈에 파악하고 테스트할 수 있어, TDD(테스트 주도 개발) 방식의 UI 개발을 가능하게 합니다.
 
 ## 추가 기능: 상단 바 동적 스크롤
 
@@ -74,29 +92,21 @@
 
 ---
 
-## 7단계: 테마 정비 상세 계획
+## 7단계: 디자인 시스템 정비 및 적용
 
-*   **🎯 목표:** 앱 전체의 시각적 일관성과 완성도를 높이기 위해 색상, 타이포그래피, 간격 등 디자인 시스템을 체계적으로 정비하고 적용합니다.
-*   **✅ 상태:** **진행 필요**
-
-### 세부 작업 내용
-
-1.  **색상(Color) 시스템 정비 (`theme/Color.kt`)**
-    *   **무엇을:** `plan-org.md`에서 제안된 `surfaceContainerHigh`, `surfaceVariant`, `onPrimaryContainer` 등 Material 3의 역할 기반 색상들을 `Color.kt`에 정의하고, 그 용도를 명확히 주석으로 설명합니다.
-    *   **어떻게:** 각 UI 컴포넌트(`InfoCard`, `AppTopBar` 등)에서 하드코딩된 색상 값이나 기본 테마 색상(`primary`, `surface` 등)을 역할 기반 색상으로 교체합니다. 예를 들어, `InfoCard`의 기본 배경색을 `MaterialTheme.colorScheme.surfaceContainerHigh`로 지정하여 입체감을 더합니다.
-
-2.  **타이포그래피(Typography) 시스템 정비 (`theme/Type.kt`)**
-    *   **무엇을:** 앱 전체의 텍스트 위계를 명확히 합니다. `plan-org.md`의 제안처럼, 작은 제목은 `titleMedium`으로, 본문은 `bodyMedium`으로 사용하는 등 스타일 사용 규칙을 정합니다.
-    *   **어떻게:** 각 컴포넌트의 `Text` 요소에 적용된 `style`을 검토하고, 역할에 맞는 타이포그래피 스타일(예: `MaterialTheme.typography.titleMedium`)로 교체하여 일관성을 확보합니다.
-
-3.  **간격(Spacing) 규칙 적용**
-    *   **무엇을:** 앱 내 모든 여백과 간격을 일관된 규칙(예: 4.dp, 8.dp, 16.dp)에 따라 설정합니다.
-    *   **어떻게:** `InfoCard` 내부의 여백, `LazyColumn` 아이템 간의 간격, `AppDrawer` 헤더와 아이템 간의 간격 등에 `Modifier.padding()`과 `Spacer`를 사용하여 지정된 간격 규칙을 적용합니다.
-
-### 기대 효과
-
-*   **전문적인 디자인:** 통일된 디자인 시스템 적용으로 앱의 시각적 완성도가 크게 향상됩니다.
-*   **유지보수 용이성:** "카드 배경색을 바꿔주세요"와 같은 디자인 변경 요청 시, `Color.kt`의 특정 색상 값만 수정하면 앱 전체에 일괄 적용되어 유지보수가 매우 편리해집니다.
+*   **✅ 상태:** **완료**
+*   **✍️ 학습 내용:**
+    *   **`MaterialTheme`**: 앱 전체의 디자인 시스템(색상, 타이포그래피, 도형)을 정의하고 하위 컴포저블에 일관되게 적용하는 역할을 합니다.
+    *   **`colorScheme`**: `primary`, `surface`, `onPrimary` 등 역할 기반의 색상 집합입니다. 다크/라이트 모드 전환을 쉽게 지원하며, "버튼 색상"과 같이 의미론적인 접근을 통해 디자인 일관성을 유지합니다.
+    *   **`typography`**: `titleLarge`, `bodyMedium` 등 텍스트의 위계와 스타일을 정의한 집합입니다. `Text(style = MaterialTheme.typography.titleLarge)`와 같이 사용하여 앱 전체의 텍스트 스타일을 통일합니다.
+*   **수정 내역:**
+    1.  **디자인 시스템 정의 (`theme` 패키지):**
+        *   **`Color.kt`:** MD3의 역할 기반 색상(`surfaceContainerHigh` 등)으로 `LightColors`와 `DarkColors`를 상세히 정의했습니다.
+        *   **`Type.kt`:** `headlineSmall`, `titleMedium` 등 역할 기반 `AppTypography`를 정의했습니다.
+        *   **`Spacing.kt`:** `AppSpacing` 객체를 새로 만들어 `4.dp` 배수의 간격 규칙을 중앙에서 관리하도록 했습니다.
+        *   **`Theme.kt`:** 앱의 메인 테마가 새로 정의된 `Color`와 `Typography`를 사용하도록 업데이트했습니다.
+    2.  **컴포넌트 적용:**
+        *   **`InfoCard`, `AppTopBar`, `AppDrawer`, `MainActivity` 등:** 하드코딩되었던 색상, 텍스트 스타일, 간격 값들을 `MaterialTheme`과 `AppSpacing`을 사용하도록 모두 교체하여 디자인 시스템을 앱 전체에 적용했습니다.
 
 ---
 
@@ -104,6 +114,9 @@
 
 *   **🎯 목표:** 현재 "Hello, Android!"만 표시하는 `MainActivity.kt`를, 지금까지 개발한 모든 모듈화된 컴포넌트를 조립하여 실제 동작하는 완성된 앱 화면으로 구현합니다.
 *   **✅ 상태:** **진행 필요**
+*   **✍️ 학습 내용:**
+    *   **컴포넌트 조립 (Composition)**: 지금까지 만든 `AppTopBar`, `AppDrawer`, `TabsLayout` 등 모듈화된 컴포넌트들을 `MainActivity`에서 `Scaffold`와 `ModalNavigationDrawer`의 각 슬롯에 배치하여 하나의 완성된 화면으로 조립합니다. 이는 선언형 UI의 핵심 원칙으로, UI 구조를 코드에서 직관적으로 파악할 수 있게 합니다.
+    *   **상태 호이스팅 (State Hoisting)**: `rememberDrawerState`, `rememberPagerState`와 같이 하위 컴포넌트에서 사용될 상태를 상위 컴포저블(`MainActivity`)에서 선언하고, 콜백 람다(`onMenuClick`)와 함께 아래로 내려보내는 디자인 패턴입니다. 이를 통해 상태의 흐름을 단방향으로 관리하여 예측 가능하고 테스트하기 쉬운 코드를 작성할 수 있습니다.
 
 ### 세부 수정 방식
 

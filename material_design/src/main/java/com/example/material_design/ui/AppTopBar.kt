@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.material_design.ui.theme.AppSpacing
 import com.example.material_design.ui.theme.ComposeLabTheme
 
 /**
@@ -30,7 +31,7 @@ import com.example.material_design.ui.theme.ComposeLabTheme
  *
  * @param title 앱 바에 표시될 제목.
  * @param scrollBehavior 스크롤 시 앱 바의 동작을 제어 (예: 축소, 사라짐).
- * @param onMenuClick 메뉴 아이콘 클릭 시 실행될 람다 함수. null이면 메뉴 버튼을 표시하지 않음.
+ * @param onMenuClick 메뉴 아이콘 클릭 시 실행될 람다 함수.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,15 +54,13 @@ fun AppTopBar(
                     // [테마 정비] 아이콘 색상은 TopAppBarDefaults에서 지정하므로 tint를 직접 설정하지 않습니다.
                 )
                 // [테마 정비] 3. 간격 규칙 적용
-                // 로고와 제목 사이의 간격은 12.dp로 설정합니다.
-                Spacer(modifier = Modifier.width(12.dp))
+                // 로고와 제목 사이의 간격은 AppSpacing.sm으로 설정합니다.
+                Spacer(modifier = Modifier.width(AppSpacing.sm))
                 // [테마 정비] 2. 타이포그래피 시스템 적용
-                // 상단 바의 제목은 `titleLarge` 스타일을 사용하여 명확하게 표시합니다.
+                // 상단 바의 제목은 `headlineSmall` 스타일을 사용하여 명확하게 표시합니다.
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        fontWeight = FontWeight.Bold
-                    )
+                    style = MaterialTheme.typography.headlineSmall
                     // [테마 정비] 텍스트 색상은 TopAppBarDefaults에서 지정하므로 color를 직접 설정하지 않습니다.
                 )
             }

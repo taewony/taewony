@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.material_design.ui.theme.AppSpacing
 import com.example.material_design.ui.theme.ComposeLabTheme
 
 /**
@@ -50,7 +51,7 @@ fun InfoCard(
         // [테마 정비] 3. 간격(Spacing) 규칙 적용
         // 카드 내부의 전체적인 여백은 16.dp로 설정하여 충분한 공간을 확보합니다.
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(AppSpacing.md)
         ) {
             // [테마 정비] 2. 타이포그래피 시스템 적용
             // 카드의 제목은 `titleMedium` 스타일을 사용하여 명확하게 전달합니다.
@@ -58,7 +59,7 @@ fun InfoCard(
                 text = cardInfo.title,
                 style = MaterialTheme.typography.titleMedium,
                 // 제목과 본문 사이의 간격은 4.dp로 설정합니다.
-                modifier = Modifier.padding(bottom = 4.dp)
+                modifier = Modifier.padding(bottom = AppSpacing.xxs)
             )
             // 카드의 본문은 `bodyMedium` 스타일을 사용하여 편안하게 읽을 수 있도록 합니다.
             Text(

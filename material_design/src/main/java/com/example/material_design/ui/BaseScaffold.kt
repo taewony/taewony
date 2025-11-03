@@ -26,7 +26,7 @@ import com.example.material_design.ui.theme.ComposeLabTheme
  */
 @Composable
 fun BaseScaffold(
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier, // collapsed AppBar 여부를 설정하는 모디파이어
     topBar: @Composable () -> Unit,
     bottomBar: @Composable () -> Unit = {},
     fab: @Composable () -> Unit = {},

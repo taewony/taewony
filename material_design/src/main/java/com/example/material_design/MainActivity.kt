@@ -40,6 +40,7 @@ import com.example.material_design.ui.BaseScaffold
 import com.example.material_design.ui.CardInfo
 import com.example.material_design.ui.InfoCard
 import com.example.material_design.ui.TabsLayout
+import com.example.material_design.ui.theme.AppSpacing
 import com.example.material_design.ui.theme.ComposeLabTheme
 import kotlinx.coroutines.launch
 
@@ -119,8 +120,8 @@ fun MainScreen() {
                                 val sampleCards = getSampleCardData()
                                 LazyColumn(
                                     modifier = Modifier.fillMaxSize(),
-                                    contentPadding = PaddingValues(16.dp),
-                                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                                    contentPadding = PaddingValues(AppSpacing.md),
+                                    verticalArrangement = Arrangement.spacedBy(AppSpacing.md)
                                 ) {
                                     items(sampleCards) { cardInfo ->
                                         InfoCard(cardInfo = cardInfo)
