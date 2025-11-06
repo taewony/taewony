@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.w09"
+    namespace = "com.example.dropdown"
     compileSdk = 36
 
     defaultConfig {
