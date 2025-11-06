@@ -1,15 +1,25 @@
 package com.example.fake_store.store.data.repository
 
+import com.example.fake_store.store.data.remote.ProductsApi
+import com.example.fake_store.store.data.remote.toProduct
 import com.example.fake_store.store.domain.model.Product
-import com.example.fake_store.store.domain.model.Rating
 import com.example.fake_store.store.domain.repository.ProductsRepository
-import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 class ProductsRepositoryImpl @Inject constructor(
-    // private val productsApi: ProductsApi // 3단계에서 다시 사용할 예정
+    private val productsApi: ProductsApi
 ) : ProductsRepository {
 
+    override suspend fun getProducts(): Result<List<Product>> {
+        return try {
+            val productDtos = productsApi.getProducts()
+            Result.success(productDtos.map { it.toProduct() })
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+}
+/*
     override suspend fun getProducts(): Result<List<Product>> {
         // 2단계: 가짜 데이터 반환
         val fakeProducts = listOf(
@@ -35,4 +45,4 @@ class ProductsRepositoryImpl @Inject constructor(
         delay(1500) // 인위적인 로딩 딜레이
         return Result.success(fakeProducts)
     }
-}
+ */

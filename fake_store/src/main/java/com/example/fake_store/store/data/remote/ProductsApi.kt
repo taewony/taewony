@@ -1,4 +1,4 @@
-package com.example.app_18_fake_store.store.data.remote
+package com.example.fake_store.store.data.remote
 
 import retrofit2.http.GET
 

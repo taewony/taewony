@@ -64,6 +64,8 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
-    // Coil (이미지 로딩 라이브러리)
+    // Networking retrofit2, Coil (이미지 로딩 라이브러리)
+    implementation(libs.squareup.retrofit2)
+    implementation(libs.squareup.converter.gson)
     implementation(libs.coil)
 }

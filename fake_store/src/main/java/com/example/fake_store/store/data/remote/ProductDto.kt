@@ -1,7 +1,7 @@
-package com.example.app_18_fake_store.store.data.remote
+package com.example.fake_store.store.data.remote
 
-import com.example.app_18_fake_store.store.domain.model.Product
-import com.example.app_18_fake_store.store.domain.model.Rating
+import com.example.fake_store.store.domain.model.Product
+import com.example.fake_store.store.domain.model.Rating
 
 // API의 JSON 필드 이름과 일치시켜야 합니다.
 // 예시: @SerializedName("product_name")

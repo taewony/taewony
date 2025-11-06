@@ -1,6 +1,5 @@
 package com.example.fake_store.store.presentation.products_screen.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -16,9 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.fake_store.R
+import coil.compose.AsyncImage
 import com.example.fake_store.store.domain.model.Product
 
 @Composable
@@ -29,6 +27,21 @@ fun ProductCard(modifier: Modifier = Modifier, product: Product) {
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
+        Column(modifier = Modifier.padding(15.dp)) {
+            AsyncImage(
+                model = product.image,
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1f),
+                contentScale = ContentScale.FillBounds,
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(text = product.title, style = MaterialTheme.typography.titleMedium)
+        }
+    }
+}
+/*
         Column(modifier = Modifier.padding(15.dp)) {
             Image(
                 painter = painterResource(id = R.drawable.img),
@@ -41,5 +54,4 @@ fun ProductCard(modifier: Modifier = Modifier, product: Product) {
             Spacer(modifier = Modifier.height(5.dp))
             Text(text = product.title, style = MaterialTheme.typography.titleMedium)
         }
-    }
-}
+ */
