@@ -65,7 +65,7 @@ dependencies {
     // DataStore
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
-    // Room
+    // Room & serialization
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler) // 'ksp'로 어노테이션 프로세서 설정

@@ -21,8 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "taewony"
 include(":app")
-include(":w03")
-include(":w04")
 include(":w05")
 include(":w06")
 include(":w07")
@@ -30,3 +28,4 @@ include(":dropdown")
 include(":cupcake")
 include(":material_design")
 include(":todo_revised")
+include(":fake_store")
