@@ -26,10 +26,10 @@
       <SelectionState runConfigName="w07">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="fake_store">
+      <SelectionState runConfigName="triple_components">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="triple_components">
+      <SelectionState runConfigName="fake_store">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
