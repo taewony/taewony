@@ -98,11 +98,11 @@ fun AppContent() {
     NavDisplay(
         currentScreen = currentScreen,
         onNavigate = { screen -> backstack.add(screen) },
-        onBack = { backstack.removeLast() },
+        onBack = { backstack.removeLastOrNull() },
         todos = todos,
         onSaveTodo = { todo ->
             todos.add(todo)
-            backstack.removeLast()
+            backstack.removeLastOrNull()
         }
     )
 }
