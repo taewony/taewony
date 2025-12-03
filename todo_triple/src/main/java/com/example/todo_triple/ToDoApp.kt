@@ -1,108 +1,112 @@
 package com.example.todo_triple
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu // Import Menu icon
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.todo_triple.screen.AddScreen
+import com.example.todo_triple.screen.MainScreen
+import com.example.todo_triple.viewmodel.TodoViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch // Import launch for coroutine scope
+import com.example.todo_triple.screen.PreferenceScreen
 
 // --- Data Layer ---
 data class ToDoItem(val id: Int, val text: String)
 
 // --- UI Layer ---
-sealed class Screen(val route: String, val title: String) {
-    object Main : Screen("main", "ToDo 리스트")
-    object AddTodo : Screen("add", "ToDo 추가")
-    // Add new screens for navigation drawer
-    object BatteryStatus : Screen("battery", "배터리 상태")
-    object Mp3Player : Screen("mp3_player", "MP3 플레이어")
-    object Gallery : Screen("gallery", "이미지 갤러리")
+sealed interface Route {
+    val title: String
+    data object Main : Route { override val title = "ToDo 리스트" }
+    data object AddTodo : Route { override val title = "ToDo 추가" }
+    data object Preference : Route { override val title = "앱 설정" }
+    data object BatteryStatus : Route { override val title = "배터리 상태" }
+    data object Mp3Player : Route { override val title = "MP3 플레이어" }
+    data object Gallery : Route { override val title = "이미지 갤러리" }
 }
 
 @OptIn(ExperimentalMaterial3Api::class) // Add opt-in for ExperimentalMaterial3Api
 @Composable
-fun ToDoApp(modifier: Modifier = Modifier) {
-    val todos = remember { mutableStateListOf<ToDoItem>() }
-    val backstack = remember { mutableStateListOf<Screen>(Screen.Main) }
-    val currentScreen = backstack.last() // Correctly observes changes in mutableStateListOf
+fun AppContent(modifier: Modifier = Modifier, viewModel: TodoViewModel = viewModel()) {
+    val todos by viewModel.todoItems.collectAsState()
+    val backstack = remember { mutableStateListOf<Route>(Route.Main) }
+    val currentScreen = backstack.last()
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
 
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed) // Drawer state
-    val scope = rememberCoroutineScope() // Coroutine scope for drawer actions
-
-    // The ModalNavigationDrawer wraps the entire main content
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
-                // Drawer header
                 Text("앱 메뉴", modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.headlineMedium)
                 Divider()
-                // Navigation items
                 NavigationDrawerItem(
-                    label = { Text(Screen.Main.title) },
-                    selected = currentScreen == Screen.Main,
+                    label = { Text(Route.Main.title) },
+                    selected = currentScreen == Route.Main,
                     onClick = {
                         scope.launch { drawerState.close() }
-                        // Clear backstack and navigate to Main
-                        if (currentScreen != Screen.Main) { // Avoid adding duplicate to backstack if already on main
+                        if (currentScreen != Route.Main) {
                             backstack.clear()
-                            backstack.add(Screen.Main)
+                            backstack.add(Route.Main)
                         }
                     }
                 )
                 NavigationDrawerItem(
-                    label = { Text(Screen.BatteryStatus.title) },
-                    selected = currentScreen == Screen.BatteryStatus,
+                    label = { Text(Route.Preference.title) },
+                    selected = currentScreen == Route.Preference,
                     onClick = {
                         scope.launch { drawerState.close() }
-                        if (currentScreen != Screen.BatteryStatus) {
-                            backstack.add(Screen.BatteryStatus)
+                        if (currentScreen != Route.Preference) {
+                            backstack.add(Route.Preference)
                         }
                     }
                 )
                 NavigationDrawerItem(
-                    label = { Text(Screen.Mp3Player.title) },
-                    selected = currentScreen == Screen.Mp3Player,
+                    label = { Text(Route.BatteryStatus.title) },
+                    selected = currentScreen == Route.BatteryStatus,
                     onClick = {
                         scope.launch { drawerState.close() }
-                        if (currentScreen != Screen.Mp3Player) {
-                            backstack.add(Screen.Mp3Player)
+                        if (currentScreen != Route.BatteryStatus) {
+                            backstack.add(Route.BatteryStatus)
                         }
                     }
                 )
                 NavigationDrawerItem(
-                    label = { Text(Screen.Gallery.title) },
-                    selected = currentScreen == Screen.Gallery,
+                    label = { Text(Route.Mp3Player.title) },
+                    selected = currentScreen == Route.Mp3Player,
                     onClick = {
                         scope.launch { drawerState.close() }
-                        if (currentScreen != Screen.Gallery) {
-                            backstack.add(Screen.Gallery)
+                        if (currentScreen != Route.Mp3Player) {
+                            backstack.add(Route.Mp3Player)
+                        }
+                    }
+                )
+                NavigationDrawerItem(
+                    label = { Text(Route.Gallery.title) },
+                    selected = currentScreen == Route.Gallery,
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                        if (currentScreen != Route.Gallery) {
+                            backstack.add(Route.Gallery)
                         }
                     }
                 )
             }
         }
     ) {
-        // Content of the screen (NavDisplay and its children)
         NavDisplay(
             currentScreen = currentScreen,
             onNavigate = { screen -> backstack.add(screen) },
             onBack = { backstack.removeLastOrNull() },
             todos = todos,
             onSaveTodo = { todoText ->
-                todos.add(ToDoItem(id = todos.size + 1, text = todoText))
+                // todos.add(ToDoItem(id = todos.size + 1, text = todoText))
                 backstack.removeLastOrNull()
             },
-            // Pass drawer control to TopAppBar
             onOpenDrawer = { scope.launch { drawerState.open() } }
         )
     }
@@ -110,161 +114,49 @@ fun ToDoApp(modifier: Modifier = Modifier) {
 
 @Composable
 fun NavDisplay(
-    currentScreen: Screen,
-    onNavigate: (Screen) -> Unit,
+    currentScreen: Route,
+    onNavigate: (Route) -> Unit,
     onBack: () -> Unit,
     todos: List<ToDoItem>,
     onSaveTodo: (String) -> Unit,
-    onOpenDrawer: () -> Unit // New parameter for opening drawer
+    onOpenDrawer: () -> Unit
 ) {
     when (currentScreen) {
-        Screen.Main -> MainScreen(
-            onAddClick = { onNavigate(Screen.AddTodo) },
+        is Route.Main -> MainScreen(
+            onAddClick = { onNavigate(Route.AddTodo) },
             todos = todos,
             onNavigate = onNavigate,
-            onOpenDrawer = onOpenDrawer // Pass to MainScreen
+            onOpenDrawer = onOpenDrawer
         )
-        Screen.AddTodo -> AddScreen(
+        is Route.AddTodo -> AddScreen(
             onSave = onSaveTodo,
             onBack = onBack
         )
-        // New screens for navigation drawer
-        Screen.BatteryStatus -> SubScreenScaffold(
-            title = currentScreen.title,
-            onBack = onBack
-        ) { paddingValues ->
-            Column(Modifier.padding(paddingValues)) {
-                BatteryStatusRoute() // Assuming BatteryStatusRoute is the entry point
-            }
-        }
-        Screen.Mp3Player -> SubScreenScaffold(
-            title = currentScreen.title,
-            onBack = onBack
-        ) { paddingValues ->
-            Column(Modifier.padding(paddingValues)) {
-                Mp3PlayerScreen() // Assuming Mp3PlayerScreen is the entry point
-            }
-        }
-        Screen.Gallery -> SubScreenScaffold(
-            title = currentScreen.title,
-            onBack = onBack
-        ) { paddingValues ->
-            Column(Modifier.padding(paddingValues)) {
-                GalleryScreen() // Assuming GalleryScreen is the entry point
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun BaseTopAppBar(title: String, navigationIcon: @Composable () -> Unit = {}) {
-    TopAppBar(
-        title = {
-            Text(
-                text = title,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
-        },
-        navigationIcon = navigationIcon,
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary
+        is Route.Preference -> PreferenceScreen(
+            onNavigateBack = onBack
         )
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MainScreen(
-    onAddClick: () -> Unit,
-    todos: List<ToDoItem>,
-    onNavigate: (Screen) -> Unit,
-    onOpenDrawer: () -> Unit // New parameter for MainScreen
-) {
-    Scaffold(
-        topBar = {
-            BaseTopAppBar(
-                title = "할일 목록",
-                navigationIcon = {
-                    IconButton(onClick = onOpenDrawer) { // Open drawer from MainScreen
-                        Icon(Icons.Filled.Menu, contentDescription = "메뉴 열기")
-                    }
-                }
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = onAddClick) {
-                Icon(Icons.Filled.Add, contentDescription = "Add ToDo")
+        is Route.BatteryStatus -> SubScreenScaffold(
+            title = currentScreen.title,
+            onBack = onBack
+        ) { paddingValues ->
+            Column(Modifier.padding(paddingValues)) {
+                BatteryStatusRoute()
             }
         }
-    ) { padding ->
-        if (todos.isEmpty()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding)
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "할 일이 없습니다. 아래 '+' 버튼을 눌러 새 할 일을 추가해보세요!",
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        } else {
-            LazyColumn(modifier = Modifier.padding(padding).padding(16.dp)) {
-                items(todos) { todo ->
-                    Text(text = todo.text, modifier = Modifier.padding(vertical = 8.dp))
-                }
+        is Route.Mp3Player -> SubScreenScaffold(
+            title = currentScreen.title,
+            onBack = onBack
+        ) { paddingValues ->
+            Column(Modifier.padding(paddingValues)) {
+                Mp3PlayerScreen()
             }
         }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun AddScreen(onSave: (String) -> Unit, onBack: () -> Unit) {
-    var text by remember { mutableStateOf("") }
-
-    Scaffold(
-        topBar = {
-            BaseTopAppBar(
-                title = "할일 추가",
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                }
-            )
-        }
-    ) { padding ->
-        Column(
-            modifier = Modifier
-                .padding(padding)
-                .padding(16.dp)
-                .fillMaxWidth()
-        ) {
-            OutlinedTextField(
-                value = text,
-                onValueChange = { text = it },
-                label = { Text("할 일을 입력하세요") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(
-                onClick = {
-                    if (text.isNotBlank()) {
-                        onSave(text)
-                    }
-                },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("저장")
+        is Route.Gallery -> SubScreenScaffold(
+            title = currentScreen.title,
+            onBack = onBack
+        ) { paddingValues ->
+            Column(Modifier.padding(paddingValues)) {
+                GalleryScreen()
             }
         }
     }
@@ -279,7 +171,7 @@ fun SubScreenScaffold(
 ) {
     Scaffold(
         topBar = {
-            BaseTopAppBar(
+            com.example.todo_triple.screen.BaseTopAppBar(
                 title = title,
                 navigationIcon = {
                     IconButton(onClick = onBack) {
